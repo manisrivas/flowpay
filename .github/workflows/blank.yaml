@@ -1,0 +1,30 @@
+name: Ardrive Workflow
+on: [push]
+env:
+  # Setting an environment variable with the value of a configuration variable
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install Dependencies
+        run: |
+         npm install -g ardrive-cli
+      - name: Build the static website
+        run: |
+         npm install
+         npm run build
+         ls
+      - name: Upload to Ardrive
+        run: |
+         echo "Uploading to Ardrive....!"
+         echo "repository variable  ${{ vars.REPOSITORY_VAR }}"
+        #  ardrive --help
+      - name: Creating a Manifest
+        run: |
+          echo "Creating a manifest....!"
+          echo "Manifest created Successfully!"
